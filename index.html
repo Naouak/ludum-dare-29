@@ -55,33 +55,16 @@
 </head>
 <body>
     <h1>Super Underwear</h1>
+    <div>
+        <h2>Score :</h2>
+        <div id="score">0</div>
+    </div>
 
     <div id="game"></div>
 
     <script src="js/character.js"></script>
-    <script src="js/Spot.js"></script>
     <script>
-        var fn = function(){
-            for(var i = 0; i < chars.length; i++){
-                chars[i].randomMove();
-            }
-            spot.update();
-            requestAnimationFrame(fn)
-        };
-        fn();
-
-        Character.sprite2_layer.onclick = function(e){
-            var pos = [e.pageX - game_node.offsetLeft, e.pageY - game_node.offsetTop];
-            for(var i = 0; i < chars.length; i++){
-                if(chars[i].hit(pos) && !chars[i].isHero()){
-                    console.log(chars.splice(i,1));
-                    i--;
-                }
-            }
-        }
-
-
-
+        new Level(100,1);
     </script>
 </body>
 </html>
