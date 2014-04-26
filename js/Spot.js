@@ -7,7 +7,6 @@ var Spot = function(node){
         set: function(value){
             this.dist += Math.pow(value[0]-pos[0],2) + Math.pow(value[1]-pos[1],2);
             pos = value;
-
             updatePosition();
         },
         get: function(){
@@ -27,21 +26,10 @@ var Spot = function(node){
     var updatePosition = function(){
         var x = pos[0];
         var y = pos[1];
-        var coords = [
-            y-80,
-            x+80,
-            y+80,
-            x-80
-        ];
-//    console.log(e);
         node.style.backgroundPosition = (x-100)+"px "+(y-100)+"px";
         node.style.clipPath = "circle("+x+"px, "+y+"px, 80px)";
-        node.style.mozClipPath = "circle("+x+"px, "+y+"px, 80px)";
-
+        node.style.MozClipPath = "circle("+x+"px, "+y+"px, 80px)";
         node.style.webkitClipPath = "circle("+x+"px, "+y+"px, 80px)";
-//        node.style.clip = "rect("+
-//            coords.join("px, ")
-//            +"px)";
     };
 
     node.onmousemove = function(e){

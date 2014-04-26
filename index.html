@@ -19,7 +19,6 @@
         }
 
         .layer1{
-            background-color: red;
         }
         .layer2{
             top: 0;
@@ -62,14 +61,6 @@
     <script src="js/character.js"></script>
     <script src="js/Spot.js"></script>
     <script>
-        var chars = [];
-        for(var i = 0; i < 100; i++){
-            chars[i] = new Character("ben","nude", true);
-            chars[i].addToDOM();
-        }
-        chars[i] = new Character("ben","spiderman", true);
-        chars[i].addToDOM();
-
         var fn = function(){
             for(var i = 0; i < chars.length; i++){
                 chars[i].randomMove();
@@ -78,6 +69,16 @@
             requestAnimationFrame(fn)
         };
         fn();
+
+        Character.sprite2_layer.onclick = function(e){
+            var pos = [e.pageX - game_node.offsetLeft, e.pageY - game_node.offsetTop];
+            for(var i = 0; i < chars.length; i++){
+                if(chars[i].hit(pos) && !chars[i].isHero()){
+                    console.log(chars.splice(i,1));
+                    i--;
+                }
+            }
+        }
 
 
 

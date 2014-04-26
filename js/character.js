@@ -21,6 +21,19 @@ function Character(sprite1, sprite2, hero){
         Character.sprite2_layer.appendChild(sprite2_div);
     };
 
+    this.hit = function(pos){
+        if(pos[0] > left && pos[0] < left+64 && pos[1] > top && pos[1] < top+100){
+            if(hero){
+                sprite1_div.style.border = "solid blue 1px";
+            } else {
+                sprite1_div.parentNode.removeChild(sprite1_div);
+                sprite2_div.parentNode.removeChild(sprite2_div);
+            }
+            return true;
+        }
+        return false;
+    }
+
     var left = (Math.random()*(960-64));
     var top = (Math.random()*(960-100));
 
@@ -85,5 +98,13 @@ function Character(sprite1, sprite2, hero){
 var game_node = document.querySelector("#game");
 game_node.appendChild(Character.sprite1_layer);
 game_node.appendChild(Character.sprite2_layer);
+
+var chars = [];
+for(var i = 0; i < 200; i++){
+    chars[i] = new Character("ben","nude", false);
+    chars[i].addToDOM();
+}
+chars[i] = new Character("ben","spiderman", true);
+chars[i].addToDOM();
 
 
