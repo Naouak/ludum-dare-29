@@ -3,8 +3,47 @@
 <head>
     <title>Super Underwear</title>
     <meta charset="utf-8">
+
+    <style>
+        #game{
+            width: 960px;
+            height: 960px;
+            position: relative;
+            margin: auto;
+            background: #787e80;
+        }
+
+        #game > div{
+            width: 100%;
+            height: 100%;
+        }
+
+        .character{
+            position: absolute;
+            width: 64px;
+            height: 100px;
+        }
+        .ben{
+            background: url("assets/ben.png");
+            background-size: contain;
+
+        }
+        .spiderman{
+            background: url("assets/spiderman.png");
+            background-size: contain;
+
+        }
+    </style>
 </head>
 <body>
     <h1>Super Underwear</h1>
+
+    <div id="game"></div>
+
+    <script src="js/character.js"></script>
+    <script>
+        var char1 = new Character("ben","spiderman", true);
+        char1.addToDOM();
+    </script>
 </body>
 </html>
