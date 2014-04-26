@@ -19,7 +19,7 @@ function Character(sprite1, sprite2, hero){
     };
 
     var left = (Math.random()*(960-64));
-    var right = (Math.random()*(960-100));
+    var top = (Math.random()*(960-100));
 
     Object.defineProperty(
         this,
@@ -38,25 +38,25 @@ function Character(sprite1, sprite2, hero){
     );
     Object.defineProperty(
         this,
-        "right",
+        "top",
         {
             set: function(value){
                 value = Math.max(0,value);
                 value = Math.min(value, 960-100);
-                right = value;
+                top = value;
                 that.move();
             },
             get: function(){
-                return right;
+                return top;
             }
         }
     );
 
     this.move = function(){
         sprite1_div.style.left = left+"px";
-        sprite1_div.style.right = right+"px";
+        sprite1_div.style.top = top+"px";
         sprite2_div.style.left = left+"px";
-        sprite2_div.style.right = right+"px";
+        sprite2_div.style.top = top+"px";
     };
 
     this.move();
