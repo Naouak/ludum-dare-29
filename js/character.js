@@ -5,7 +5,8 @@ var Level = function(chars_count,hero_count, old_score, next_level ){
     ];
 
     var hero_combination = [
-        ["ben","spiderman"]
+        ["ben","spiderman"],
+        ["ben","hulk"]
     ];
 
     function Character(sprite1, sprite2, hero){

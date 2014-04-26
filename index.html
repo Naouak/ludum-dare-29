@@ -21,6 +21,11 @@
             background: rgba(0,0,0,0.3);
         }
 
+        .hud.flip{
+            right: auto;
+            left: 0;
+        }
+
         .display{
             border: solid black 3px;
             display: inline-block;
@@ -43,7 +48,6 @@
         #game{
             width: 960px;
             height: 960px;
-            margin: auto;
             background: #787e80;
             position: relative;
         }
@@ -84,6 +88,10 @@
         }
         .spiderman{
             background: url("assets/spiderman.png");
+            background-size: contain;
+        }
+        .hulk{
+            background: url("assets/hulk.png");
             background-size: contain;
         }
     </style>
@@ -144,6 +152,13 @@
         };
 
         next_level(0);
+
+        var hud = document.querySelector(".hud");
+        console.log(hud);
+        hud.addEventListener("click", function(){
+            console.log("test");
+            hud.className = hud.className.indexOf("flip")>0?"hud":"hud flip";
+        });
     </script>
 </body>
 </html>
