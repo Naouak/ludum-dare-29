@@ -1,13 +1,17 @@
-var Level = function(chars_count,hero_count, old_score, next_level ){
+var Level = function(chars_count,hero_count, chars_combination, hero_combination, old_score, next_level ){
     that = this;
-    var chars_combination = [
-        ["ben","nude"]
-    ];
-
-    var hero_combination = [
-        ["ben","spiderman"],
-        ["ben","hulk"]
-    ];
+//    var chars_combination = [
+//        ["ben","nude"],
+//        ["clark","nude"],
+//        ["k","nude"],
+////        ["","nude"]
+//    ];
+//
+//    var hero_combination = [
+//        ["ben","spiderman"],
+//        ["ben","hulk"]
+////            ["","hulk"]
+//    ];
 
     function Character(sprite1, sprite2, hero){
         var thatChar = this;
@@ -106,8 +110,7 @@ var Level = function(chars_count,hero_count, old_score, next_level ){
     var Spot = function(node){
         var that = this;
         var pos = [0,0];
-        var dist = 0;
-        var move =
+        var dist = -10000;
             Object.defineProperty(this,"pos" , {
                 set: function(value){
                     this.dist += Math.pow(value[0]-pos[0],2) + Math.pow(value[1]-pos[1],2);
@@ -120,7 +123,7 @@ var Level = function(chars_count,hero_count, old_score, next_level ){
             });
         Object.defineProperty(this,"dist", {
             set: function(value){
-                dist = value;
+                dist = Math.min(value,0);
                 node.style.opacity = Math.max(1 - dist/1000000, 0.2);
             },
             get: function(){
@@ -214,7 +217,7 @@ var Level = function(chars_count,hero_count, old_score, next_level ){
         }
         spot.update();
         hero_count_div.innerHTML = hero_count;
-        timer_div.innerHTML = Math.round(that.time_elapsed/10)/100;
+        timer_div.innerHTML = Math.round(that.time_elapsed/1000);
         if(hero_count > 0){
             requestAnimationFrame(mainloop)
         } else {

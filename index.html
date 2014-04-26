@@ -5,9 +5,15 @@
     <meta charset="utf-8">
 
     <style>
+        html, body{
+            padding: 0;
+            margin: 0;
+        }
+
         body{
-            font-family: sans-serif;
-            padding-bottom: 200px;
+            font-family: "impact" sans-serif;
+            min-width: 960px;
+            min-height: 960px;
         }
 
         .hud{
@@ -49,7 +55,11 @@
             width: 960px;
             height: 960px;
             background: #787e80;
-            position: relative;
+            position: absolute;
+            top: 0;
+            left: 0;
+            padding: 0;
+            margin: 0;
         }
 
         #game > div{
@@ -94,10 +104,43 @@
             background: url("assets/hulk.png");
             background-size: contain;
         }
+
+        .clark{
+            background: url("assets/clark.png");
+            background-size: contain;
+        }
+
+        .k{
+            background: url("assets/k.png");
+            background-size: contain;
+        }
+
+        button{
+            font-size: 200%;
+            padding: 20px;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+
+        .interscreen_title{
+            font-size: 100px;
+            text-align: center;
+            line-height: 960px;
+            margin: 0;
+            padding: 0;
+        }
+        .score_final, .level{
+            font-size: 60px;
+            position: absolute;
+            bottom: 120px;
+            left: 0;
+            right: 0;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
-    <h1>Super Underwear</h1>
     <div class="hud">
         <div class="display">
             <h2>Score :</h2>
@@ -115,43 +158,136 @@
 
     <div id="game"></div>
 
+    <script id="interscreen" type="text/htmlh">
+        <h2 class="interscreen_title">Level cleared</h2>
+        <button class="next">Next Level</button>
+        <div class="score_final">0 points</div>
+    </script>
+
+    <script id="startscreen" type="text/htmlh">
+        <h2 class="interscreen_title">Super Underwear</h2>
+        <button class="next">Next Level</button>
+        <div class="level"></div>
+    </script>
+
     <script src="js/character.js"></script>
     <script>
+        var total_score = 0;
         var levels = [
             {
                 chars: 10,
-                heroes: 1
+                heroes: 1,
+                chars_combination: [
+                    ["ben","nude"],
+                    ["clark","nude"],
+                    ["k","nude"]
+                ],
+                hero_combination: [
+                    ["ben","spiderman"],
+                    ["ben","hulk"]
+                ]
             },
             {
                 chars: 100,
-                heroes: 2
+                heroes: 2,
+                chars_combination: [
+                    ["ben","nude"],
+                    ["clark","nude"],
+                    ["k","nude"]
+                ],
+                hero_combination: [
+                    ["ben","spiderman"],
+                    ["ben","hulk"]
+                ]
             },
             {
                 chars: 200,
-                heroes: 3
+                heroes: 3,
+                chars_combination: [
+                    ["ben","nude"],
+                    ["clark","nude"],
+                    ["k","nude"]
+                ],
+                hero_combination: [
+                    ["ben","spiderman"],
+                    ["ben","hulk"]
+                ]
             },
             {
                 chars: 300,
-                heroes: 4
+                heroes: 4,
+                chars_combination: [
+                    ["ben","nude"],
+                    ["clark","nude"],
+                    ["k","nude"]
+                ],
+                hero_combination: [
+                    ["ben","spiderman"],
+                    ["ben","hulk"]
+                ]
             },
             {
                 chars: 400,
-                heroes: 5
+                heroes: 5,
+                chars_combination: [
+                    ["ben","nude"],
+                    ["clark","nude"],
+                    ["k","nude"]
+                ],
+                hero_combination: [
+                    ["ben","spiderman"],
+                    ["ben","hulk"]
+                ]
             },
         ];
 
-        var current_level = -1;
+        var current_level = 0;
         var level_object = null;
         var next_level = function(score){
-            console.log("NEXT LEVEL!!!!");
-            current_level++;
+            total_score = score;
             if(level_object){
                 level_object.killAll();
             }
-            level_object = new Level(levels[current_level].chars, levels[current_level].heroes, score, next_level);
+            interscreen(function(){
+                console.log("NEXT LEVEL!!!!");
+                current_level++;
+
+                start_screen(start_level);
+            });
         };
 
-        next_level(0);
+        var start_level = function(){
+            level_object = new Level(levels[current_level].chars, levels[current_level].heroes,
+                    levels[current_level].chars_combination,
+                    levels[current_level].hero_combination,
+                    total_score, next_level);
+        };
+
+        var interscreen = function(cb){
+            var tmpl = document.getElementById("interscreen").innerHTML;
+            var div = document.createElement("div");
+            div.innerHTML = tmpl;
+            div.addEventListener("click",function(){
+                div.parentNode.removeChild(div);
+                cb();
+            });
+            div.querySelector(".score_final").innerHTML = "Score :<br />"+total_score+" points";
+            document.getElementById("game").appendChild(div);
+        };
+
+        var start_screen = function(cb){
+            var tmpl = document.getElementById("startscreen").innerHTML;
+            var div = document.createElement("div");
+            div.innerHTML = tmpl;
+            div.addEventListener("click",function(){
+                div.parentNode.removeChild(div);
+                cb();
+            });
+            div.querySelector(".level").innerHTML = "Level "+(current_level+1);
+            document.getElementById("game").appendChild(div);
+        };
+
+        start_screen(start_level);
 
         var hud = document.querySelector(".hud");
         console.log(hud);
