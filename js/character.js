@@ -1,6 +1,5 @@
-
-
-var Level = function(chars_count,hero_count ){
+var Level = function(chars_count,hero_count, old_score, next_level ){
+    that = this;
     var chars_combination = [
         ["ben","nude"]
     ];
@@ -10,37 +9,33 @@ var Level = function(chars_count,hero_count ){
     ];
 
     function Character(sprite1, sprite2, hero){
-        var that = this;
+        var thatChar = this;
         var sprite1_div = document.createElement("div");
         sprite1_div.className = "character "+sprite1;
-
         var sprite2_div = document.createElement("div");
         sprite2_div.className = "character_under "+sprite2;
-
         this.isHero = function(){
             return hero;
         };
-
         this.addToDOM = function(){
             Character.sprite1_layer.appendChild(sprite1_div);
             Character.sprite2_layer.appendChild(sprite2_div);
         };
-
         this.hit = function(pos){
             if(pos[0] > left && pos[0] < left+64 && pos[1] > top && pos[1] < top+100){
                 if(hero){
-                    score.score += 10;
+                    score.score += Math.max(Math.floor(10000-that.time_elapsed/10),2500);
                     sprite1_div.style.border = "solid blue 1px";
                 } else {
-                    score.score -= 1;
-                    sprite1_div.parentNode.removeChild(sprite1_div);
-                    sprite2_div.parentNode.removeChild(sprite2_div);
+                    score.score -= 100;
                 }
+                sprite1_div.parentNode.removeChild(sprite1_div);
+                sprite2_div.parentNode.removeChild(sprite2_div);
+
                 return true;
             }
             return false;
-        }
-
+        };
         var left = (Math.random()*(960-64));
         var top = (Math.random()*(960-100));
 
@@ -52,7 +47,7 @@ var Level = function(chars_count,hero_count ){
                     value = Math.max(0,value);
                     value = Math.min(value, 960-64);
                     left = value;
-                    that.move();
+                    thatChar.move();
                 },
                 get: function(){
                     return left;
@@ -67,7 +62,7 @@ var Level = function(chars_count,hero_count ){
                     value = Math.max(0,value);
                     value = Math.min(value, 960-100);
                     top = value;
-                    that.move();
+                    thatChar.move();
                 },
                 get: function(){
                     return top;
@@ -153,9 +148,8 @@ var Level = function(chars_count,hero_count ){
     };
     var spot = new Spot(Character.sprite2_layer);
 
-    function Score(){
+    function Score(score){
         var score_div = document.getElementById("score");
-        var score = 0;
         Object.defineProperty(this,"score", {
             set: function(value){
                 score = value;
@@ -167,8 +161,17 @@ var Level = function(chars_count,hero_count ){
         });
 
     }
+    var score = new Score(old_score);
 
-    var score = new Score();
+    var timer_div = document.getElementById("timer");
+    var start = new Date();
+    Object.defineProperty(this, "time_elapsed", {
+        get: function(){
+            return new Date().getTime()-start.getTime();
+        }
+    });
+
+    var hero_count_div = document.getElementById("hero_count");
 
     var game_node = document.querySelector("#game");
     game_node.appendChild(Character.sprite1_layer);
@@ -190,12 +193,10 @@ var Level = function(chars_count,hero_count ){
         char.addToDOM();
     }
 
-    console.log(chars);
-
     Character.sprite2_layer.onclick = function(e){
         var pos = [e.pageX - game_node.offsetLeft, e.pageY - game_node.offsetTop];
         for(var i = 0; i < chars.length; i++){
-            if(chars[i].hit(pos) && !chars[i].isHero()){
+            if(chars[i].hit(pos)){
                 chars.splice(i,1);
                 i--;
             }
@@ -203,11 +204,26 @@ var Level = function(chars_count,hero_count ){
     };
 
     var mainloop = function(){
+        var hero_count = 0;
         for(var i = 0; i < chars.length; i++){
             chars[i].randomMove();
+            if(chars[i].isHero()){
+                hero_count++;
+            }
         }
         spot.update();
-        requestAnimationFrame(mainloop)
+        hero_count_div.innerHTML = hero_count;
+        timer_div.innerHTML = Math.round(that.time_elapsed/10)/100;
+        if(hero_count > 0){
+            requestAnimationFrame(mainloop)
+        } else {
+            Character.sprite1_layer.parentNode.removeChild(Character.sprite1_layer);
+            Character.sprite2_layer.parentNode.removeChild(Character.sprite2_layer);
+            next_level(score.score);
+        }
     };
-    mainloop();
+    requestAnimationFrame(mainloop);
+
+    this.killAll = function(){
+    }
 };

@@ -5,6 +5,41 @@
     <meta charset="utf-8">
 
     <style>
+        body{
+            font-family: sans-serif;
+            padding-bottom: 200px;
+        }
+
+        .hud{
+            text-align: center;
+            position: fixed;
+            z-index: 99999999999;
+            width: 346px;
+            right: 0;
+            bottom: 0;
+            top: 0;
+            background: rgba(0,0,0,0.3);
+        }
+
+        .display{
+            border: solid black 3px;
+            display: inline-block;
+            width: 300px;
+            font-size: 60px;
+            margin: 20px;
+            background: white;
+        }
+
+        .display h2{
+            font-size: 30px;
+        }
+
+        .display div{
+            text-align: right;
+            padding: 5px;
+        }
+
+
         #game{
             width: 960px;
             height: 960px;
@@ -55,16 +90,60 @@
 </head>
 <body>
     <h1>Super Underwear</h1>
-    <div>
-        <h2>Score :</h2>
-        <div id="score">0</div>
+    <div class="hud">
+        <div class="display">
+            <h2>Score :</h2>
+            <div id="score">0</div>
+        </div>
+        <div class="display">
+            <h2>Timer :</h2>
+            <div id="timer">0</div>
+        </div>
+        <div class="display">
+            <h2>Hero(es) left :</h2>
+            <div id="hero_count">0</div>
+        </div>
     </div>
 
     <div id="game"></div>
 
     <script src="js/character.js"></script>
     <script>
-        new Level(100,1);
+        var levels = [
+            {
+                chars: 10,
+                heroes: 1
+            },
+            {
+                chars: 100,
+                heroes: 2
+            },
+            {
+                chars: 200,
+                heroes: 3
+            },
+            {
+                chars: 300,
+                heroes: 4
+            },
+            {
+                chars: 400,
+                heroes: 5
+            },
+        ];
+
+        var current_level = -1;
+        var level_object = null;
+        var next_level = function(score){
+            console.log("NEXT LEVEL!!!!");
+            current_level++;
+            if(level_object){
+                level_object.killAll();
+            }
+            level_object = new Level(levels[current_level].chars, levels[current_level].heroes, score, next_level);
+        };
+
+        next_level(0);
     </script>
 </body>
 </html>
