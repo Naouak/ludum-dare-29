@@ -40,10 +40,14 @@
             background-size: contain;
 
         }
+        .nude{
+            background: url("assets/nude.png");
+            background-size: contain;
+
+        }
         .spiderman{
             background: url("assets/spiderman.png");
             background-size: contain;
-
         }
     </style>
 </head>
@@ -53,20 +57,26 @@
     <div id="game"></div>
 
     <script src="js/character.js"></script>
+    <script src="js/spot.js"></script>
     <script>
         var chars = [];
         for(var i = 0; i < 100; i++){
-            chars[i] = new Character("ben","spiderman", true);
+            chars[i] = new Character("ben","nude", true);
             chars[i].addToDOM();
         }
+        chars[i] = new Character("ben","spiderman", true);
+        chars[i].addToDOM();
 
         var fn = function(){
             for(var i = 0; i < chars.length; i++){
                 chars[i].randomMove();
             }
+            spot.update();
             requestAnimationFrame(fn)
         };
         fn();
+
+
 
     </script>
 </body>

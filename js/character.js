@@ -61,10 +61,10 @@ function Character(sprite1, sprite2, hero){
     this.randomMove = function(){
         this.left += vect[0];
         this.top += vect[1];
-        if(last_move*0.01 > Math.random()){
+        if(last_move*0.0001 > Math.random()){
             last_move = 0;
-            vect[0] = Math.random()*2-1;
-            vect[1] = Math.random()*2-1;
+            vect[0] = Math.random()-0.5;
+            vect[1] = Math.random()-0.5;
         } else {
             last_move++;
         }
@@ -87,18 +87,3 @@ game_node.appendChild(Character.sprite1_layer);
 game_node.appendChild(Character.sprite2_layer);
 
 
-Character.sprite2_layer.onmousemove = function(e){
-    var x = e.pageX - game_node.offsetLeft;
-    var y = e.pageY - game_node.offsetTop;
-    var coords = [
-        y-80,
-        x+80,
-        y+80,
-        x-80
-    ];
-//    console.log(e);
-    Character.sprite2_layer.style.backgroundPosition = (x-100)+"px "+(y-100)+"px";
-    Character.sprite2_layer.style.clip = "rect("+
-        coords.join("px, ")
-        +"px)";
-}
