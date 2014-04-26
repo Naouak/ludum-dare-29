@@ -36,6 +36,8 @@ var Spot = function(node){
 //    console.log(e);
         node.style.backgroundPosition = (x-100)+"px "+(y-100)+"px";
         node.style.clipPath = "circle("+x+"px, "+y+"px, 80px)";
+        node.style.mozClipPath = "circle("+x+"px, "+y+"px, 80px)";
+
         node.style.webkitClipPath = "circle("+x+"px, "+y+"px, 80px)";
 //        node.style.clip = "rect("+
 //            coords.join("px, ")
