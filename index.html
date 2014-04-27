@@ -255,11 +255,14 @@
 
 
         var bg_music = document.querySelector(".bgmusic");
-        bg_music.addEventListener('ended', function(){
-            bg_music.src = "assets/bg_music.mp3";
+        var restart_music = function(){
+            bg_music.src = levels[current_level].bg_music || "assets/bg_music.mp3";
             bg_music.play();
-            bg_music.currentTime = 0;
-        }, false);
+            try{
+                bg_music.currentTime = 0;
+            } catch(e){}
+        };
+        bg_music.addEventListener('ended', restart_music, false);
         var total_score = 0;
         var levels = [
 
@@ -341,6 +344,42 @@
                 message: "<span style='color:red;'>Find the normal guy!</span>"
             },
             {
+                chars: 200,
+                heroes: 2,
+                chars_combination: heroes,
+                hero_combination:  [
+                    ["ben","nude","mob.mp3"],
+                    ["clark","nude","mob.mp3"],
+                    ["k","nude","mob.mp3"]
+                ],
+                title: "Normal Underwear",
+                message: "<span style='color:red;'>Find the normal guy!</span>"
+            },
+            {
+                chars: 300,
+                heroes: 3,
+                chars_combination: heroes,
+                hero_combination:  [
+                    ["ben","nude","mob.mp3"],
+                    ["clark","nude","mob.mp3"],
+                    ["k","nude","mob.mp3"]
+                ],
+                title: "Normal Underwear",
+                message: "<span style='color:red;'>Find the normal guy!</span>"
+            },
+            {
+                chars: 400,
+                heroes: 4,
+                chars_combination: heroes,
+                hero_combination:  [
+                    ["ben","nude","mob.mp3"],
+                    ["clark","nude","mob.mp3"],
+                    ["k","nude","mob.mp3"]
+                ],
+                title: "Normal Underwear",
+                message: "<span style='color:red;'>Find the normal guy!</span>"
+            },
+            {
                 chars: 100,
                 heroes: 1,
                 chars_combination: [
@@ -350,6 +389,18 @@
                 title: "Batman Underwear",
                 message: "Find the goddamn batman!",
                 jingle: "batman.mp3"
+            },
+            {
+                chars: 100,
+                heroes: 1,
+                chars_combination: [
+                    ["","nude","mob.mp3"]
+                ],
+                hero_combination:  [["","batman","wayne.mp3"]],
+                title: "Disco Underwear",
+                message: "Find the dancing batman!",
+                jingle: "bee_gee.mp3",
+                bg_music: "assets/beegee_music.mp3"
             },
 
         ];
@@ -373,8 +424,7 @@
         };
 
         var start_level = function(){
-            bg_music.currentTime = 0;
-            bg_music.play();
+            restart_music();
             level_object = new Level(levels[current_level].chars, levels[current_level].heroes,
                     levels[current_level].chars_combination,
                     levels[current_level].hero_combination,
