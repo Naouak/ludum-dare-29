@@ -198,6 +198,13 @@
             right: 0;
             text-align: center;
         }
+
+        .fever{
+            background-color: black;
+        }
+
+
+
     </style>
 </head>
 <body>
@@ -281,7 +288,7 @@
                 ],
                 hero_combination: heroes,
                 message: "Find the super hero!",
-                jingle: "super_underwear.mp3"
+                jingle: "super_underwear.mp3",
             },
             {
                 chars: 100,
@@ -406,7 +413,9 @@
                 title: "Disco Underwear",
                 message: "Find the dancing guy!",
                 jingle: "bee_gee.mp3",
-                bg_music: "assets/beegee_music.mp3"
+                bg_music: "assets/beegee_music.mp3",
+                background: "fever"
+
             },
 
         ];
@@ -434,7 +443,8 @@
             level_object = new Level(levels[current_level].chars, levels[current_level].heroes,
                     levels[current_level].chars_combination,
                     levels[current_level].hero_combination,
-                    total_score, next_level);
+                    total_score, next_level,
+                    levels[current_level].background);
         };
 
         var interscreen = function(cb){

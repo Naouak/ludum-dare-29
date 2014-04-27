@@ -6,7 +6,7 @@ var playSound = function(file){
     sound.play();
 };
 
-var Level = function(chars_count,hero_count, chars_combination, hero_combination, old_score, next_level ){
+var Level = function(chars_count,hero_count, chars_combination, hero_combination, old_score, next_level, background ){
 
 
     that = this;
@@ -110,8 +110,14 @@ var Level = function(chars_count,hero_count, chars_combination, hero_combination
 
     Character.sprite1_layer = document.createElement("div");
     Character.sprite1_layer.className = "layer1";
+    if(background){
+        Character.sprite1_layer.className += " "+background;
+    }
     Character.sprite2_layer = document.createElement("div");
     Character.sprite2_layer.className = "layer2";
+    if(background){
+        Character.sprite2_layer.className += " "+background;
+    }
 
     var Spot = function(node){
         var that = this;
