@@ -1,19 +1,15 @@
 var Level = function(chars_count,hero_count, chars_combination, hero_combination, old_score, next_level ){
-    that = this;
-//    var chars_combination = [
-//        ["ben","nude"],
-//        ["clark","nude"],
-//        ["k","nude"],
-////        ["","nude"]
-//    ];
-//
-//    var hero_combination = [
-//        ["ben","spiderman"],
-//        ["ben","hulk"]
-////            ["","hulk"]
-//    ];
+    var sound = document.getElementById("sound");
 
-    function Character(sprite1, sprite2, hero){
+    var playSound = function(file){
+        sound.src = " assets/"+file;
+        sound.load();
+        sound.play();
+    };
+
+    that = this;
+
+    function Character(sprite1, sprite2, hero, sound){
         var thatChar = this;
         var sprite1_div = document.createElement("div");
         sprite1_div.className = "character "+sprite1;
@@ -31,6 +27,9 @@ var Level = function(chars_count,hero_count, chars_combination, hero_combination
                 if(hero){
                     score.score += Math.max(Math.floor(10000-that.time_elapsed/10),2500);
                     sprite1_div.style.border = "solid blue 1px";
+                    if(sound){
+                        playSound(sound);
+                    }
                 } else {
                     score.score -= 100;
                 }
@@ -111,16 +110,16 @@ var Level = function(chars_count,hero_count, chars_combination, hero_combination
         var that = this;
         var pos = [0,0];
         var dist = -10000;
-            Object.defineProperty(this,"pos" , {
-                set: function(value){
-                    this.dist += Math.pow(value[0]-pos[0],2) + Math.pow(value[1]-pos[1],2);
-                    pos = value;
-                    updatePosition();
-                },
-                get: function(){
-                    return pos;
-                }
-            });
+        Object.defineProperty(this,"pos" , {
+            set: function(value){
+                this.dist += Math.pow(value[0]-pos[0],2) + Math.pow(value[1]-pos[1],2);
+                pos = value;
+                updatePosition();
+            },
+            get: function(){
+                return pos;
+            }
+        });
         Object.defineProperty(this,"dist", {
             set: function(value){
                 dist = Math.min(value,0);
@@ -186,13 +185,13 @@ var Level = function(chars_count,hero_count, chars_combination, hero_combination
     var char = null;
     for(var i = 0; i < chars_count; i++){
         combination = chars_combination[Math.floor(Math.random()*chars_combination.length)];
-        char = new Character(combination[0],combination[1], false);
+        char = new Character(combination[0],combination[1], false, combination[2]);
         chars.push(char);
         char.addToDOM();
     }
     for(i = 0; i < hero_count; i++){
         combination = hero_combination[Math.floor(Math.random()*hero_combination.length)];
-        char = new Character(combination[0],combination[1], true);
+        char = new Character(combination[0],combination[1], true, combination[2]);
         chars.push(char);
         char.addToDOM();
     }
