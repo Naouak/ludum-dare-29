@@ -85,6 +85,7 @@
             position: absolute;
             width: 64px;
             height: 100px;
+            transition: -webkit-transform 1s, opacity 1s;
         }
         .ben{
             background: url("assets/ben_lowres.png");
@@ -120,6 +121,12 @@
             background-size: contain;
         }
 
+        .killed{
+            -webkit-transform: scale(2,2);
+            opacity: 0;
+
+        }
+
         button{
             font-size: 200%;
             padding: 20px;
@@ -134,8 +141,21 @@
             line-height: 960px;
             margin: 0;
             padding: 0;
+            color: red;
+            -webkit-text-stroke: blue 5px;
+            -webkit-transition: -webkit-transform 1s, opacity 1s;
+            opacity: 0;
+            -webkit-transform: rotateZ(180deg) scale(0.01,0.01);
+
         }
-        .score_final, .level{
+
+        .interscreen_title.show{
+            -webkit-transform: rotateZ(360deg) scale(1,1);
+            opacity: 1;
+
+        }
+
+        .score_final, .level, .tweet_button{
             font-size: 60px;
             position: absolute;
             bottom: 120px;
@@ -144,10 +164,31 @@
             text-align: center;
         }
 
+        .endscreen.score_final{
+            bottom: 200px;
+        }
+
+        .tweet_button{
+            text-decoration: none;
+            background: #009ee0;
+            color: white;
+            padding: 10px;
+            width: 450px;
+            margin: auto;
+            display: block;
+            border: solid white 3px;
+        }
+
+        .tweet_button:hover{
+            background: white;
+            color: #009ee0;
+            border-color: #009ee0;
+        }
+
         .message{
             font-size: 60px;
             position: absolute;
-            bottom: 200px;
+            bottom: 250px;
             left: 0;
             right: 0;
             text-align: center;
@@ -172,20 +213,24 @@
 
     <div id="game"></div>
 
-    <audio class="bgmusic" src="assets/bg_music.mp3" loop="loop"></audio>
+    <audio class="bgmusic" src="assets/bg_music.mp3"></audio>
     <audio id="sound"></audio>
 
     <script id="interscreen" type="text/htmlh">
-        <h2 class="interscreen_title">Level cleared</h2>
-        <button class="next">Next Level</button>
+        <h2 class="interscreen_title show">Level cleared</h2>
         <div class="score_final">0 points</div>
     </script>
 
     <script id="startscreen" type="text/htmlh">
         <h2 class="interscreen_title">Super Underwear</h2>
-        <button class="next">Next Level</button>
         <div class="message"></div>
         <div class="level"></div>
+    </script>
+
+    <script id="endscreen" type="text/htmlh">
+        <h2 class="interscreen_title show">Game over</h2>
+        <a class="tweet_button" target="_blank">Tweet my score</a>
+        <div class="score_final endscreen">0 points</div>
     </script>
 
     <script src="js/character.js"></script>
@@ -210,26 +255,33 @@
 
 
         var bg_music = document.querySelector(".bgmusic");
+        bg_music.addEventListener('ended', function(){
+            bg_music.src = "assets/bg_music.mp3";
+            bg_music.play();
+            bg_music.currentTime = 0;
+        }, false);
         var total_score = 0;
         var levels = [
+
             {
                 chars: 10,
                 heroes: 1,
                 chars_combination: [
-                    ["ben","nude"],
-                    ["clark","nude"],
-                    ["k","nude"]
+                    ["ben","nude","mob.mp3"],
+                    ["clark","nude","mob.mp3"],
+                    ["k","nude","mob.mp3"]
                 ],
                 hero_combination: heroes,
-                message: "Find the super hero!"
+                message: "Find the super hero!",
+                jingle: "super_underwear.mp3"
             },
             {
                 chars: 100,
                 heroes: 2,
                 chars_combination: [
-                    ["ben","nude"],
-                    ["clark","nude"],
-                    ["k","nude"]
+                    ["ben","nude","mob.mp3"],
+                    ["clark","nude","mob.mp3"],
+                    ["k","nude","mob.mp3"]
                 ],
                 hero_combination: heroes
             },
@@ -237,9 +289,9 @@
                 chars: 200,
                 heroes: 3,
                 chars_combination: [
-                    ["ben","nude"],
-                    ["clark","nude"],
-                    ["k","nude"]
+                    ["ben","nude","mob.mp3"],
+                    ["clark","nude","mob.mp3"],
+                    ["k","nude","mob.mp3"]
                 ],
                 hero_combination: heroes
             },
@@ -247,9 +299,9 @@
                 chars: 300,
                 heroes: 4,
                 chars_combination: [
-                    ["ben","nude"],
-                    ["clark","nude"],
-                    ["k","nude"]
+                    ["ben","nude","mob.mp3"],
+                    ["clark","nude","mob.mp3"],
+                    ["k","nude","mob.mp3"]
                 ],
                 hero_combination: heroes
             },
@@ -257,9 +309,9 @@
                 chars: 400,
                 heroes: 5,
                 chars_combination: [
-                    ["ben","nude"],
-                    ["clark","nude"],
-                    ["k","nude"]
+                    ["ben","nude","mob.mp3"],
+                    ["clark","nude","mob.mp3"],
+                    ["k","nude","mob.mp3"]
                 ],
                 hero_combination: heroes
             },
@@ -272,16 +324,9 @@
                     ["k","nude","mob.mp3"]
                 ],
                 chars_combination: heroes,
-                message: "Find the normal guy!"
-            },
-            {
-                chars: 100,
-                heroes: 1,
-                chars_combination: [
-                    ["batman","nude","mob.mp3"]
-                ],
-                hero_combination:  [["batman","batman","wayne.mp3"]],
-                message: "Find the goddamn batman!"
+                title: "Normal Underwear",
+                message: "<span style='color:red;'>Find the normal guy!</span>"
+
             },
             {
                 chars: 100,
@@ -292,7 +337,19 @@
                     ["clark","nude","mob.mp3"],
                     ["k","nude","mob.mp3"]
                 ],
-                message: "Find the goddamn batman!"
+                title: "Normal Underwear",
+                message: "<span style='color:red;'>Find the normal guy!</span>"
+            },
+            {
+                chars: 100,
+                heroes: 1,
+                chars_combination: [
+                    ["batman","nude","mob.mp3"]
+                ],
+                hero_combination:  [["batman","batman","wayne.mp3"]],
+                title: "Batman Underwear",
+                message: "Find the goddamn batman!",
+                jingle: "batman.mp3"
             },
 
         ];
@@ -307,8 +364,11 @@
             interscreen(function(){
                 console.log("NEXT LEVEL!!!!");
                 current_level++;
-
-                start_screen(start_level);
+                if(levels[current_level]){
+                    start_screen(start_level);
+                } else {
+                    end_screen();
+                }
             });
         };
 
@@ -346,7 +406,32 @@
             if(levels[current_level].message){
                 div.querySelector(".message").innerHTML = levels[current_level].message;
             }
+            if(levels[current_level].title){
+                div.querySelector(".interscreen_title").innerHTML = levels[current_level].title;
+            }
             document.getElementById("game").appendChild(div);
+
+            setTimeout(function(){
+                div.querySelector(".interscreen_title").className += " show";
+
+            },0);
+
+            if(levels[current_level].jingle){
+                playSound(levels[current_level].jingle);
+            }
+        };
+
+        var end_screen = function(){
+            var tmpl = document.getElementById("endscreen").innerHTML;
+            var div = document.createElement("div");
+            div.innerHTML = tmpl;
+            var twitter_link = "https://twitter.com/share?url=http://naouak.github.io/ludum-dare-29/&hashtags=ldparis+ld48+super_underwear&text=";
+            twitter_link+="I scored "+total_score+" points in Super Underwear";
+
+            div.querySelector(".tweet_button").href = twitter_link;
+            document.getElementById("game").appendChild(div);
+            div.querySelector(".score_final").innerHTML = "Score :<br />"+total_score+" points";
+
         };
 
         start_screen(start_level);

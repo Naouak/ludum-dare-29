@@ -1,11 +1,13 @@
-var Level = function(chars_count,hero_count, chars_combination, hero_combination, old_score, next_level ){
-    var sound = document.getElementById("sound");
+var sound = document.getElementById("sound");
 
-    var playSound = function(file){
-        sound.src = " assets/"+file;
-        sound.load();
-        sound.play();
-    };
+var playSound = function(file){
+    sound.src = " assets/"+file;
+    sound.load();
+    sound.play();
+};
+
+var Level = function(chars_count,hero_count, chars_combination, hero_combination, old_score, next_level ){
+
 
     that = this;
 
@@ -26,14 +28,19 @@ var Level = function(chars_count,hero_count, chars_combination, hero_combination
             if(pos[0] > left && pos[0] < left+64 && pos[1] > top && pos[1] < top+100){
                 if(hero){
                     score.score += Math.max(Math.floor(10000-that.time_elapsed/10),2500);
-                    sprite1_div.style.border = "solid blue 1px";
-                    if(sound){
-                        playSound(sound);
-                    }
+
+
                 } else {
                     score.score -= 100;
                 }
-                sprite1_div.parentNode.removeChild(sprite1_div);
+                sprite1_div.className += " killed";
+                if(sound){
+                    playSound(sound);
+                }
+                setTimeout(function(){
+                    sprite1_div.parentNode.removeChild(sprite1_div);
+                },1000);
+
                 sprite2_div.parentNode.removeChild(sprite2_div);
 
                 return true;
@@ -220,9 +227,11 @@ var Level = function(chars_count,hero_count, chars_combination, hero_combination
         if(hero_count > 0){
             requestAnimationFrame(mainloop)
         } else {
-            Character.sprite1_layer.parentNode.removeChild(Character.sprite1_layer);
-            Character.sprite2_layer.parentNode.removeChild(Character.sprite2_layer);
-            next_level(score.score);
+            setTimeout(function(){
+                Character.sprite1_layer.parentNode.removeChild(Character.sprite1_layer);
+                Character.sprite2_layer.parentNode.removeChild(Character.sprite2_layer);
+                next_level(score.score);
+            },1000);
         }
     };
     requestAnimationFrame(mainloop);
