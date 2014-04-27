@@ -247,6 +247,12 @@
 
     <script src="js/character.js"></script>
     <script>
+    var is_chrome = navigator.userAgent.toLowerCase().indexOf('chrome') > -1;
+    if(!is_chrome){
+        alert("This game is only chrome compatible. Sorry.");
+        throw new EventException("pas le bon navigateur");
+    }
+
         var side1 = ["ben","clark","k"];
         var side2 = [
             ["spiderman","peter.mp3"],
@@ -289,6 +295,7 @@
                 hero_combination: heroes,
                 message: "Find the super hero!",
                 jingle: "super_underwear.mp3",
+                timer: 10
             },
             {
                 chars: 100,
@@ -298,7 +305,8 @@
                     ["clark","nude","mob.mp3"],
                     ["k","nude","mob.mp3"]
                 ],
-                hero_combination: heroes
+                hero_combination: heroes,
+                timer: 50
             },
             {
                 chars: 200,
@@ -308,7 +316,8 @@
                     ["clark","nude","mob.mp3"],
                     ["k","nude","mob.mp3"]
                 ],
-                hero_combination: heroes
+                hero_combination: heroes,
+                timer: 100
             },
             {
                 chars: 300,
@@ -318,7 +327,8 @@
                     ["clark","nude","mob.mp3"],
                     ["k","nude","mob.mp3"]
                 ],
-                hero_combination: heroes
+                hero_combination: heroes,
+                timer: 150
             },
             {
                 chars: 400,
@@ -328,7 +338,8 @@
                     ["clark","nude","mob.mp3"],
                     ["k","nude","mob.mp3"]
                 ],
-                hero_combination: heroes
+                hero_combination: heroes,
+                timer: 200
             },
             {
                 chars: 100,
@@ -339,7 +350,8 @@
                 hero_combination:  [["batman","batman","wayne.mp3"]],
                 title: "Batman Underwear",
                 message: "Find the goddamn batman!",
-                jingle: "batman.mp3"
+                jingle: "batman.mp3",
+                timer: 50
             },
             {
                 chars: 10,
@@ -351,7 +363,8 @@
                 ],
                 chars_combination: heroes,
                 title: "Normal Underwear",
-                message: "<span style='color:red;'>Find the normal guy!</span>"
+                message: "<span style='color:red;'>Find the normal guy!</span>",
+                timer: 20
 
             },
             {
@@ -364,7 +377,8 @@
                     ["k","nude","mob.mp3"]
                 ],
                 title: "Normal Underwear",
-                message: "<span style='color:red;'>Find the normal guy!</span>"
+                message: "<span style='color:red;'>Find the normal guy!</span>",
+                timer: 50
             },
             {
                 chars: 200,
@@ -376,7 +390,8 @@
                     ["k","nude","mob.mp3"]
                 ],
                 title: "Normal Underwear",
-                message: "<span style='color:red;'>Find the normal guy!</span>"
+                message: "<span style='color:red;'>Find the normal guy!</span>",
+                timer: 100
             },
             {
                 chars: 300,
@@ -388,7 +403,8 @@
                     ["k","nude","mob.mp3"]
                 ],
                 title: "Normal Underwear",
-                message: "<span style='color:red;'>Find the normal guy!</span>"
+                message: "<span style='color:red;'>Find the normal guy!</span>",
+                timer: 150
             },
             {
                 chars: 400,
@@ -400,7 +416,8 @@
                     ["k","nude","mob.mp3"]
                 ],
                 title: "Normal Underwear",
-                message: "<span style='color:red;'>Find the normal guy!</span>"
+                message: "<span style='color:red;'>Find the normal guy!</span>",
+                timer: 200
             },
 
             {
@@ -414,7 +431,8 @@
                 message: "Find the dancing guy!",
                 jingle: "bee_gee.mp3",
                 bg_music: "assets/beegee_music.mp3",
-                background: "fever"
+                background: "fever",
+                timer: 50
 
             },
 
@@ -422,20 +440,25 @@
 
         var current_level = 0;
         var level_object = null;
-        var next_level = function(score){
+        var next_level = function(score, gameover){
             total_score = score;
             if(level_object){
                 level_object.killAll();
             }
-            interscreen(function(){
-                console.log("NEXT LEVEL!!!!");
-                current_level++;
-                if(levels[current_level]){
-                    start_screen(start_level);
-                } else {
-                    end_screen();
-                }
-            });
+            if(gameover){
+                end_screen();
+            } else {
+                interscreen(function(){
+                    console.log("NEXT LEVEL!!!!");
+                    current_level++;
+                    if(levels[current_level]){
+                        start_screen(start_level);
+                    } else {
+                        end_screen();
+                    }
+                });
+            }
+
         };
 
         var start_level = function(){
@@ -444,7 +467,9 @@
                     levels[current_level].chars_combination,
                     levels[current_level].hero_combination,
                     total_score, next_level,
-                    levels[current_level].background);
+                    levels[current_level].background,
+                    levels[current_level].timer
+            );
         };
 
         var interscreen = function(cb){

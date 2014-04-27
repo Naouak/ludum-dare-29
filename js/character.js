@@ -6,7 +6,7 @@ var playSound = function(file){
     sound.play();
 };
 
-var Level = function(chars_count,hero_count, chars_combination, hero_combination, old_score, next_level, background ){
+var Level = function(chars_count,hero_count, chars_combination, hero_combination, old_score, next_level, background, timer ){
 
 
     that = this;
@@ -27,7 +27,10 @@ var Level = function(chars_count,hero_count, chars_combination, hero_combination
         this.hit = function(pos){
             if(pos[0] > left && pos[0] < left+64 && pos[1] > top && pos[1] < top+100){
                 if(hero){
-                    score.score += Math.max(Math.floor(10000-that.time_elapsed/10),2500);
+                    score.score += Math.max(
+                        Math.floor(2500+(7500*(((timer*1000)-that.time_score)/(timer*1000) ))),
+                        2500
+                    );
 
 
                 } else {
@@ -183,7 +186,13 @@ var Level = function(chars_count,hero_count, chars_combination, hero_combination
     var start = new Date();
     Object.defineProperty(this, "time_elapsed", {
         get: function(){
-            return new Date().getTime()-start.getTime();
+            return timer-(new Date().getTime()-start.getTime())/1000;
+        }
+    });
+
+    Object.defineProperty(this, "time_score", {
+        get: function(){
+            return (new Date().getTime()-start.getTime());
         }
     });
 
@@ -227,16 +236,21 @@ var Level = function(chars_count,hero_count, chars_combination, hero_combination
                 hero_count++;
             }
         }
+
+
         spot.update();
         hero_count_div.innerHTML = hero_count;
-        timer_div.innerHTML = Math.round(that.time_elapsed/1000);
-        if(hero_count > 0){
+        timer_div.innerHTML = Math.round(that.time_elapsed);
+
+        var gameover = that.time_elapsed < 0;
+
+        if(!gameover && hero_count > 0){
             requestAnimationFrame(mainloop)
         } else {
             setTimeout(function(){
                 Character.sprite1_layer.parentNode.removeChild(Character.sprite1_layer);
                 Character.sprite2_layer.parentNode.removeChild(Character.sprite2_layer);
-                next_level(score.score);
+                next_level(score.score,gameover);
             },1000);
         }
     };
