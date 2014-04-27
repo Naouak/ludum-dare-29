@@ -435,6 +435,19 @@
                 timer: 25
 
             },
+            {
+                chars: 2000,
+                heroes: 20,
+                chars_combination: [
+                    ["ben","nude","mob.mp3"],
+                    ["clark","nude","mob.mp3"],
+                    ["k","nude","mob.mp3"]
+                ],
+                hero_combination: heroes,
+                timer: 15,
+                title: "Bonus Level",
+                message: "Your computer will have difficulties to play this level!"
+            },
 
         ];
 
@@ -446,6 +459,7 @@
                 level_object.killAll();
             }
             if(gameover){
+                bg_music.pause();
                 end_screen();
             } else {
                 interscreen(function(){
