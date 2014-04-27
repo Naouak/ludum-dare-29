@@ -87,31 +87,31 @@
             height: 100px;
         }
         .ben{
-            background: url("assets/ben.png");
+            background: url("assets/ben_lowres.png");
             background-size: contain;
 
         }
         .nude{
-            background: url("assets/nude.png");
+            background: url("assets/nude_lowres.png");
             background-size: contain;
 
         }
         .spiderman{
-            background: url("assets/spiderman.png");
+            background: url("assets/spiderman_lowres.png");
             background-size: contain;
         }
         .hulk{
-            background: url("assets/hulk.png");
+            background: url("assets/hulk_lowres.png");
             background-size: contain;
         }
 
         .clark{
-            background: url("assets/clark.png");
+            background: url("assets/clark_lowres.png");
             background-size: contain;
         }
 
         .k{
-            background: url("assets/k.png");
+            background: url("assets/k_lowres.png");
             background-size: contain;
         }
 
@@ -158,6 +158,8 @@
 
     <div id="game"></div>
 
+    <audio class="bgmusic" src="assets/bg_music.mp3" loop="loop"></audio>
+
     <script id="interscreen" type="text/htmlh">
         <h2 class="interscreen_title">Level cleared</h2>
         <button class="next">Next Level</button>
@@ -172,6 +174,7 @@
 
     <script src="js/character.js"></script>
     <script>
+        var bg_music = document.querySelector(".bgmusic");
         var total_score = 0;
         var levels = [
             {
@@ -257,6 +260,8 @@
         };
 
         var start_level = function(){
+            bg_music.currentTime = 0;
+            bg_music.play();
             level_object = new Level(levels[current_level].chars, levels[current_level].heroes,
                     levels[current_level].chars_combination,
                     levels[current_level].hero_combination,
@@ -268,6 +273,7 @@
             var div = document.createElement("div");
             div.innerHTML = tmpl;
             div.addEventListener("click",function(){
+                bg_music.pause();
                 div.parentNode.removeChild(div);
                 cb();
             });
