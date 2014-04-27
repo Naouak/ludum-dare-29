@@ -221,6 +221,8 @@
             <h2>Hero(es) left :</h2>
             <div id="hero_count">0</div>
         </div>
+
+        <button onclick="document.body.webkitRequestFullScreen()">Fullscreen</button>
     </div>
 
     <div id="game"></div>
@@ -283,7 +285,6 @@
         bg_music.addEventListener('ended', restart_music, false);
         var total_score = 0;
         var levels = [
-
             {
                 chars: 10,
                 heroes: 1,
@@ -295,7 +296,7 @@
                 hero_combination: heroes,
                 message: "Find the super hero and click on him to kill him!",
                 jingle: "super_underwear.mp3",
-                timer: 5
+                timer: 10
             },
             {
                 chars: 100,
@@ -320,7 +321,7 @@
                 ],
                 hero_combination: heroes,
                 timer: 50,
-                message: "To get more point, found them quickly!"
+                message: "To get more point, find them quickly!"
 
             },
             {
@@ -346,7 +347,7 @@
                 ],
                 hero_combination: heroes,
                 timer: 100,
-                message: "No unicorn was kill during the developpement of this game."
+                message: "No unicorn was kill during the development of this game."
 
             },
             {
