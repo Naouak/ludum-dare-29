@@ -121,6 +121,11 @@
             background-size: contain;
         }
 
+        .disco{
+            background: url("assets/disco_lowres.png");
+            background-size: contain;
+        }
+
         .killed{
             -webkit-transform: scale(2,2);
             opacity: 0;
@@ -319,6 +324,17 @@
                 hero_combination: heroes
             },
             {
+                chars: 100,
+                heroes: 1,
+                chars_combination: [
+                    ["batman","nude","mob.mp3"]
+                ],
+                hero_combination:  [["batman","batman","wayne.mp3"]],
+                title: "Batman Underwear",
+                message: "Find the goddamn batman!",
+                jingle: "batman.mp3"
+            },
+            {
                 chars: 10,
                 heroes: 1,
                 hero_combination: [
@@ -379,26 +395,16 @@
                 title: "Normal Underwear",
                 message: "<span style='color:red;'>Find the normal guy!</span>"
             },
-            {
-                chars: 100,
-                heroes: 1,
-                chars_combination: [
-                    ["batman","nude","mob.mp3"]
-                ],
-                hero_combination:  [["batman","batman","wayne.mp3"]],
-                title: "Batman Underwear",
-                message: "Find the goddamn batman!",
-                jingle: "batman.mp3"
-            },
+
             {
                 chars: 100,
                 heroes: 1,
                 chars_combination: [
                     ["","nude","mob.mp3"]
                 ],
-                hero_combination:  [["","batman","wayne.mp3"]],
+                hero_combination:  [["","disco","disco.mp3"]],
                 title: "Disco Underwear",
-                message: "Find the dancing batman!",
+                message: "Find the dancing guy!",
                 jingle: "bee_gee.mp3",
                 bg_music: "assets/beegee_music.mp3"
             },
